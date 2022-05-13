@@ -5,7 +5,7 @@ const ITERATION_KEY = Symbol('iteration key')
  * 存储可观察对象的reaction,键为原始对象,值为map(map的键为原始对象的属性,值为原始对象的对应键的reaction)
  * @param {*} obj 原始对象
  */
-export function storeObservable(obj) {
+export function storeObservable (obj) {
   // this will be used to save (obj.key -> reaction) connections later
   connectionStore.set(obj, new Map())
 }
@@ -15,7 +15,7 @@ export function storeObservable(obj) {
  * @param {*} reaction 需要添加的reaction
  * @param {*} param1 操作参数,包含目标对象,操作的键,操作类型
  */
-export function registerReactionForOperation(reaction, { target, key, type }) {
+export function registerReactionForOperation (reaction, { target, key, type }) {
   if (type === 'iterate') {
     key = ITERATION_KEY
   }
@@ -43,7 +43,7 @@ export function registerReactionForOperation(reaction, { target, key, type }) {
  * @param {*} param0 操作信息,包含目标对象,操作类型,操作属性键
  * @returns 返回该操作涉及的所有reactions
  */
-export function getReactionsForOperation({ target, key, type }) {
+export function getReactionsForOperation ({ target, key, type }) {
   // 获得
   const reactionsForTarget = connectionStore.get(target)
   const reactionsForKey = new Set()
@@ -73,7 +73,7 @@ export function getReactionsForOperation({ target, key, type }) {
  * @param {*} reactionsForTarget 针对目标对象的reactions集合的map结构
  * @param {*} key 具体的键
  */
-function addReactionsForKey(reactionsForKey, reactionsForTarget, key) {
+function addReactionsForKey (reactionsForKey, reactionsForTarget, key) {
   // 在map结构中取出针对key值的reactions集合
   const reactions = reactionsForTarget.get(key)
   // 把取到的reactions全部推入reactionsForKey集合
@@ -81,7 +81,7 @@ function addReactionsForKey(reactionsForKey, reactionsForTarget, key) {
 }
 
 // 释放reaction,取消reaction
-export function releaseReaction(reaction) {
+export function releaseReaction (reaction) {
   if (reaction.cleaners) {
     // 如果reaction有观察的可观察值,则把其删除
     reaction.cleaners.forEach(releaseReactionKeyConnection, reaction)
@@ -92,11 +92,11 @@ export function releaseReaction(reaction) {
  * 删除reactionsForKey上的reaction(this)
  * @param {*} reactionsForKey 针对某个key的reactions集合
  */
-function releaseReactionKeyConnection(reactionsForKey) {
+function releaseReactionKeyConnection (reactionsForKey) {
   // 删除在可观察对象
   reactionsForKey.delete(this)
 }
 
 export const logConnectionMap = () => {
-  console.log(connectionStore);
+  console.log(connectionStore)
 }

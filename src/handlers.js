@@ -19,9 +19,9 @@ const wellKnownSymbols = new Set(
  * @param {*} target 目标对象
  * @param {*} key 操作属性
  * @param {*} receiver this
- * @returns 
+ * @returns
  */
-function get(target, key, receiver) {
+function get (target, key, receiver) {
   const result = Reflect.get(target, key, receiver)
   // do not register (observable.prop -> reaction) pairs for well known symbols
   // these symbols are frequently retrieved in low level JavaScript under the hood
@@ -57,7 +57,7 @@ function get(target, key, receiver) {
   return observableResult || result
 }
 
-function has(target, key) {
+function has (target, key) {
   const result = Reflect.has(target, key)
   // register and save (observable.prop -> runningReaction)
   // 注册reaction
@@ -65,7 +65,7 @@ function has(target, key) {
   return result
 }
 
-function ownKeys(target) {
+function ownKeys (target) {
   // 注册reaction
   registerRunningReactionForOperation({ target, type: 'iterate' })
   return Reflect.ownKeys(target)
@@ -78,9 +78,9 @@ function ownKeys(target) {
  * @param {*} key 操作的key
  * @param {*} value 设置的值
  * @param {*} receiver 调用发起方
- * @returns 
+ * @returns
  */
-function set(target, key, value, receiver) {
+function set (target, key, value, receiver) {
   // make sure to do not pollute the raw object with observables
   if (typeof value === 'object' && value !== null) {
     // 如果value是观察对象,置为原始对象
@@ -98,7 +98,7 @@ function set(target, key, value, receiver) {
   // target不是原始receiver,则不排队触发reactions
   // 可能是由于原型继承
   if (target !== proxyToRaw.get(receiver)) {
-    console.log('截取到target不是receiver的原始值');
+    console.log('截取到target不是receiver的原始值')
     return result
   }
   // queue a reaction if it's a new property or its value changed
@@ -119,7 +119,7 @@ function set(target, key, value, receiver) {
   return result
 }
 
-function deleteProperty(target, key) {
+function deleteProperty (target, key) {
   // save if the object had the key
   const hadKey = hasOwnProperty.call(target, key)
   const oldValue = target[key]

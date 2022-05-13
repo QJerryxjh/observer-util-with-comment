@@ -3,7 +3,7 @@ import { storeObservable } from './store'
 import * as builtIns from './builtIns'
 import baseHandlers from './handlers'
 
-export function observable(obj = {}) {
+export function observable (obj = {}) {
   // if it is already an observable or it should not be wrapped, return it
   if (proxyToRaw.has(obj) || !builtIns.shouldInstrument(obj)) {
     // 已经是可观察的,直接返回其自身
@@ -17,7 +17,7 @@ export function observable(obj = {}) {
   return rawToProxy.get(obj) || createObservable(obj)
 }
 
-function createObservable(obj) {
+function createObservable (obj) {
   // if it is a complex built-in object or a normal object, wrap it
   // 获取对象的代理处理函数,否则使用基础的处理函数
   const handlers = builtIns.getHandlers(obj) || baseHandlers
@@ -34,17 +34,17 @@ function createObservable(obj) {
 /**
  * 是否是可观察的对象,每次创建一个可观察之后,都会把原始对象及以他创建的可观察对象保存下来,判断是否可观察的时候,就是判断是否在此集合内部
  * @param {*} obj 目标对象
- * @returns 
+ * @returns
  */
-export function isObservable(obj) {
+export function isObservable (obj) {
   return proxyToRaw.has(obj)
 }
 
 /**
  * 获取可观察对象的原始对象,如果传入不是可观察对象,则返回其自身
  * @param {*} obj 目标对象
- * @returns 
+ * @returns
  */
-export function raw(obj) {
+export function raw (obj) {
   return proxyToRaw.get(obj) || obj
 }

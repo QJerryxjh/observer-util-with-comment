@@ -1,7 +1,8 @@
 import collectionHandlers from './collections'
 
 // eslint-disable-next-line
-const globalObj = typeof window === 'object' ? window : Function('return this')();
+const globalObj =
+  typeof window === 'object' ? window : Function('return this')()
 
 // built-in object can not be wrapped by Proxies
 // their methods expect the object instance as the 'this' instead of the Proxy wrapper
@@ -27,9 +28,9 @@ const handlers = new Map([
 
 /**
  * 是否应该被建造
- * @returns 
+ * @returns
  */
-export function shouldInstrument({ constructor }) {
+export function shouldInstrument ({ constructor }) {
   // 是否是内置对象
   const isBuiltIn =
     typeof constructor === 'function' &&
@@ -42,8 +43,8 @@ export function shouldInstrument({ constructor }) {
 
 /**
  * 获取该形式对象的处理函数,只有map和set类型的数据有,包含weak,其他都为false
- * @returns 
+ * @returns
  */
-export function getHandlers(obj) {
+export function getHandlers (obj) {
   return handlers.get(obj.constructor)
 }

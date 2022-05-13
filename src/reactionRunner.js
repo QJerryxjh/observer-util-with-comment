@@ -8,7 +8,7 @@ import {
 const reactionStack = []
 let isDebugging = false
 
-export function runAsReaction(reaction, fn, context, args) {
+export function runAsReaction (reaction, fn, context, args) {
   // do not build reactive relations, if the reaction is unobserved
   if (reaction.unobserved) {
     // 如果已经被取消观察了,则直接运行返回结果
@@ -45,7 +45,7 @@ export function runAsReaction(reaction, fn, context, args) {
  * 为目标对象上key属性添加reaction
  * @param {*} operation 操作,包含目标对象,属性key,this指向,操作类型
  */
-export function registerRunningReactionForOperation(operation) {
+export function registerRunningReactionForOperation (operation) {
   // get the current reaction from the top of the stack
   // 从栈顶获取当前正在运行的reaction
   const runningReaction = reactionStack[reactionStack.length - 1]
@@ -59,9 +59,9 @@ export function registerRunningReactionForOperation(operation) {
 
 /**
  * 可观察对象改变后传播更改,触发reaction
- * @param {*} operation 
+ * @param {*} operation
  */
-export function queueReactionsForOperation(operation) {
+export function queueReactionsForOperation (operation) {
   // iterate and queue every reaction, which is triggered by obj.key mutation
   // 由obj.key 触发的操作,迭代并排队触发改操作的reaction
   getReactionsForOperation(operation).forEach(queueReaction, operation)
@@ -71,9 +71,9 @@ export function queueReactionsForOperation(operation) {
  * 排队运行reaction
  * 追加debugger配置可以调试
  * 追加scheduler可以以该调度来运行reaction
- * @param {*} reaction 
+ * @param {*} reaction
  */
-function queueReaction(reaction) {
+function queueReaction (reaction) {
   // 调用reaction的debugger
   debugOperation(reaction, this)
   // queue the reaction for later execution or run it immediately
@@ -91,12 +91,12 @@ function queueReaction(reaction) {
 
 /**
  * 如果reaction有debugger且当前没有正在运行的debugger,调用reaction的debugger
- * @param {*} reaction 
- * @param {*} operation 
+ * @param {*} reaction
+ * @param {*} operation
  */
-function debugOperation(reaction, operation) {
+function debugOperation (reaction, operation) {
   if (reaction.debugger && !isDebugging) {
-    console.log('debugger=========');
+    console.log('debugger=========')
     // 如果reaction有配置debugger参数,并且现在没有正在debugger
     try {
       // 把当前debugger状态置为true
@@ -114,6 +114,6 @@ function debugOperation(reaction, operation) {
  * 根绝reaction栈判断是否正在运行reaction
  * @returns 是否正在运行reaction
  */
-export function hasRunningReaction() {
+export function hasRunningReaction () {
   return reactionStack.length > 0
 }
