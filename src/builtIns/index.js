@@ -25,14 +25,25 @@ const handlers = new Map([
   [Float64Array, false]
 ])
 
-export function shouldInstrument ({ constructor }) {
+/**
+ * 是否应该被建造
+ * @returns 
+ */
+export function shouldInstrument({ constructor }) {
+  // 是否是内置对象
   const isBuiltIn =
     typeof constructor === 'function' &&
     constructor.name in globalObj &&
     globalObj[constructor.name] === constructor
+  // 如果不是内置函数,直接返回true
+  // 否则看是否在handler中
   return !isBuiltIn || handlers.has(constructor)
 }
 
-export function getHandlers (obj) {
+/**
+ * 获取该形式对象的处理函数,只有map和set类型的数据有,包含weak,其他都为false
+ * @returns 
+ */
+export function getHandlers(obj) {
   return handlers.get(obj.constructor)
 }

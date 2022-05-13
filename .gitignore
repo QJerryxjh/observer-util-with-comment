@@ -45,3 +45,5 @@ opt
 
 # reify cache for allowing import export in node
 .reify-cache
+
+.history
